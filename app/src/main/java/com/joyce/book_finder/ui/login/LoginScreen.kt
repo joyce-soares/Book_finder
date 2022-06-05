@@ -35,12 +35,11 @@ import com.joyce.book_finder.theme.PRIMARY
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
-    val viewModel = getViewModel<LoginViewModel>()
+fun LoginScreen(navController: NavHostController, loginVM: LoginViewModel) {
     val localFocusManager = LocalFocusManager.current
     var passwordVisible by remember { mutableStateOf(false) }
-    val state by viewModel.state.collectAsState()
-    val isLoading by viewModel.loading.collectAsState()
+    val state by loginVM.state.collectAsState()
+    val isLoading by loginVM.loading.collectAsState()
     when(state){
         is LoginState.Success -> {
             navController.popBackStack()
@@ -65,7 +64,7 @@ fun LoginScreen(navController: NavHostController) {
             modifier = Modifier
                 .padding(start = 20.dp, end = 20.dp),
             labelText = "Email",
-            inputWrapper = viewModel.emailInput,
+            inputWrapper = loginVM.emailInput,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
@@ -78,7 +77,7 @@ fun LoginScreen(navController: NavHostController) {
                 .padding(start = 20.dp, end = 20.dp),
             isPassword = true,
             labelText = "Senha",
-            inputWrapper = viewModel.passwordInput,
+            inputWrapper = loginVM.passwordInput,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
@@ -92,12 +91,12 @@ fun LoginScreen(navController: NavHostController) {
                     Icon(
                         imageVector = image,
                         description,
-                        tint = if (!viewModel.passwordInput.inputError.hasError) Color.Black else MaterialTheme.colors.error
+                        tint = if (!loginVM.passwordInput.inputError.hasError) Color.Black else MaterialTheme.colors.error
                     )
                 }
             },
             onImeKeyAction = {
-                viewModel.passwordInput.onValueChange(viewModel.passwordInput.value)
+                loginVM.passwordInput.onValueChange(loginVM.passwordInput.value)
                 localFocusManager.clearFocus()
             }
         )
@@ -109,7 +108,7 @@ fun LoginScreen(navController: NavHostController) {
                 .padding(start = 20.dp, end = 20.dp),
             text = "Entrar",
             loadingText = "Entrando...",
-            onClicked = { viewModel.login() }
+            onClicked = { loginVM.login() }
         )
         Spacer(modifier = Modifier.height(10.dp))
         ConstraintLayout(
@@ -147,5 +146,5 @@ fun LoginScreen(navController: NavHostController) {
 @Preview
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(rememberNavController())
+   // LoginScreen(rememberNavController(), loginVM)
 }

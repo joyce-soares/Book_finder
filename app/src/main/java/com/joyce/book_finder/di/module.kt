@@ -1,6 +1,8 @@
 package com.joyce.book_finder.di
 
+import com.joyce.book_finder.network.RetrofitService
 import com.joyce.book_finder.ui.login.LoginViewModel
+import com.joyce.book_finder.ui.search_book.BooksViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -13,9 +15,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 private const val BASE_URL = "https://api.mercadoeditorial.org/"
 
 val module = module {
+    single { retrofit.create(RetrofitService::class.java) }
+    viewModel {BooksViewModel(get()) }
     viewModel {LoginViewModel() }
-
-    //single { retrofit.create(RetrofitService::class.java) }
 }
 
 val logging =  HttpLoggingInterceptor().apply {

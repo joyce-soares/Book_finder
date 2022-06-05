@@ -5,7 +5,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.joyce.book_finder.ui.login.LoginScreen
+import com.joyce.book_finder.ui.login.LoginViewModel
 import com.joyce.book_finder.ui.search_book.BooksScreen
+import com.joyce.book_finder.ui.search_book.BooksViewModel
 import com.joyce.book_finder.ui.splash.SplashScreen
 
 sealed class Screen(val route: String){
@@ -15,7 +17,11 @@ sealed class Screen(val route: String){
 }
 
 @Composable
-fun NavigationComponent(navController: NavHostController) {
+fun NavigationComponent(
+    navController: NavHostController,
+    booksVM: BooksViewModel,
+    loginVM: LoginViewModel
+) {
     NavHost(
         navController = navController,
         startDestination = Screen.Splash.route
@@ -24,10 +30,10 @@ fun NavigationComponent(navController: NavHostController) {
             SplashScreen(navController = navController)
         }
         composable(Screen.Login.route){
-            LoginScreen(navController = navController)
+            LoginScreen(navController = navController, loginVM)
         }
         composable(Screen.Books.route) {
-            BooksScreen()
+            BooksScreen(booksVM)
         }
     }
 }

@@ -31,12 +31,9 @@ fun ButtonProgress(
     progressIndicatorColor: Color = Color.White,
     onClicked: () -> Unit
 ) {
-    var clicked by remember { mutableStateOf(false) }
 
     Surface(
-        // modifier = modifier.clickable { clicked = !clicked },
         modifier = modifier.clickable {
-            //clicked = !clicked
             onClicked()
         },
         shape = shape,

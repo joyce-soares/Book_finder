@@ -7,8 +7,14 @@ import androidx.compose.material.Scaffold
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.joyce.book_finder.navigation.NavigationComponent
+import com.joyce.book_finder.ui.login.LoginViewModel
+import com.joyce.book_finder.ui.search_book.BooksViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val booksVM by viewModel<BooksViewModel>()
+    private val loginVM by viewModel<LoginViewModel>()
 
     private lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Scaffold {
                 navController = rememberNavController()
-                NavigationComponent(navController = navController)
+                NavigationComponent(navController = navController, booksVM, loginVM)
             }
         }
     }
