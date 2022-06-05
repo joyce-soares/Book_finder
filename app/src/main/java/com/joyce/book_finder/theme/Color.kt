@@ -1,4 +1,4 @@
-package com.joyce.book_finder.ui.splash.ui.theme
+package com.joyce.book_finder.theme
 
 import androidx.compose.ui.graphics.Color
 

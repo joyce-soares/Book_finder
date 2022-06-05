@@ -19,7 +19,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joyce.book_finder.ui.splash.ui.theme.PRIMARY
+import com.joyce.book_finder.theme.PRIMARY
 import com.joyce.book_finder.utils.InputWrapper
 
 

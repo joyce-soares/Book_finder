@@ -13,7 +13,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 private const val BASE_URL = "https://api.mercadoeditorial.org/"
 
 val module = module {
-
     viewModel {LoginViewModel() }
 
     //single { retrofit.create(RetrofitService::class.java) }

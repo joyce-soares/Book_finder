@@ -29,7 +29,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.joyce.book_finder.R
 import com.joyce.book_finder.customViews.TextFieldCustom
-import com.joyce.book_finder.ui.splash.ui.theme.PRIMARY
+import com.joyce.book_finder.navigation.Screen
+import com.joyce.book_finder.theme.PRIMARY
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -40,7 +41,8 @@ fun LoginScreen(navController: NavHostController) {
     val state by viewModel.state.collectAsState()
     when(state){
         is LoginState.Success -> {
-            navController.navigate("books")
+            navController.popBackStack()
+            navController.navigate(Screen.Books.route)
         }
         is LoginState.Error -> {
             Toast.makeText(LocalContext.current, (state as LoginState.Error).message, Toast.LENGTH_LONG).show() }
