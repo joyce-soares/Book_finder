@@ -71,6 +71,8 @@ fun TextFieldCustom(
         if (inputWrapper.inputError.hasError) {
             inputWrapper.inputError.errorMessage?.let {
                 Text(
+                    modifier = Modifier
+                        .padding(start = 20.dp),
                     text = it,
                     color = MaterialTheme.colors.error,
                     style = MaterialTheme.typography.caption

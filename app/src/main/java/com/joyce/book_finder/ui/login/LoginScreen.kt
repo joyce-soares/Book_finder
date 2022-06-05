@@ -28,6 +28,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.joyce.book_finder.R
+import com.joyce.book_finder.customViews.ButtonProgress
 import com.joyce.book_finder.customViews.TextFieldCustom
 import com.joyce.book_finder.navigation.Screen
 import com.joyce.book_finder.theme.PRIMARY
@@ -39,6 +40,7 @@ fun LoginScreen(navController: NavHostController) {
     val localFocusManager = LocalFocusManager.current
     var passwordVisible by remember { mutableStateOf(false) }
     val state by viewModel.state.collectAsState()
+    val isLoading by viewModel.loading.collectAsState()
     when(state){
         is LoginState.Success -> {
             navController.popBackStack()
@@ -100,13 +102,15 @@ fun LoginScreen(navController: NavHostController) {
             }
         )
         Spacer(modifier = Modifier.height(26.dp))
-        Button(
+        ButtonProgress(
+            isLoading = isLoading,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 20.dp, end = 20.dp),
-            onClick = { viewModel.login() }) {
-            Text(text = "Entrar")
-        }
+            text = "Entrar",
+            loadingText = "Entrando...",
+            onClicked = { viewModel.login() }
+        )
         Spacer(modifier = Modifier.height(10.dp))
         ConstraintLayout(
             modifier = Modifier
