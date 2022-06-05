@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "306505782999",
+    "project_id": "book-finder-2c5bf",
+    "storage_bucket": "book-finder-2c5bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306505782999:android:8e0c935a28de34f0590292",
+        "android_client_info": {
+          "package_name": "com.joyce.book_finder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306505782999-rojnae3ubi4qsdncd4q2mrlsgqbacb5s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.joyce.book_finder",
+            "certificate_hash": "8b06554471639d90dd704750d8f41abf9bac45b7"
+          }
+        },
+        {
+          "client_id": "306505782999-jluoc76hbl13libbam3vbj79ciabbco4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOlZomd64DuZUrDlMG4IIyxycNkrL3nlY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306505782999-jluoc76hbl13libbam3vbj79ciabbco4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

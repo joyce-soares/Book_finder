@@ -1,4 +1,4 @@
-package com.joyce.book_finder.ui.theme
+package com.joyce.book_finder.ui.splash.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
