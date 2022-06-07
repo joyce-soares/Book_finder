@@ -32,19 +32,17 @@ import com.joyce.book_finder.customViews.ButtonProgress
 import com.joyce.book_finder.customViews.TextFieldCustom
 import com.joyce.book_finder.navigation.Screen
 import com.joyce.book_finder.theme.PRIMARY
+import com.joyce.book_finder.ui.search_book.BooksActivity
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun LoginScreen(navController: NavHostController, loginVM: LoginViewModel) {
+fun LoginScreen(loginVM: LoginViewModel) {
     val localFocusManager = LocalFocusManager.current
     var passwordVisible by remember { mutableStateOf(false) }
     val state by loginVM.state.collectAsState()
     val isLoading by loginVM.loading.collectAsState()
     when(state){
-        is LoginState.Success -> {
-            navController.popBackStack()
-            navController.navigate(Screen.Books.route)
-        }
+        is LoginState.Success -> { BooksActivity.start(LocalContext.current) }
         is LoginState.Error -> {
             Toast.makeText(LocalContext.current, (state as LoginState.Error).message, Toast.LENGTH_LONG).show() }
         else -> {}

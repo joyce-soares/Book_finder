@@ -13,16 +13,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val booksVM by viewModel<BooksViewModel>()
     private val loginVM by viewModel<LoginViewModel>()
-
     private lateinit var navController: NavHostController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             Scaffold {
                 navController = rememberNavController()
-                NavigationComponent(navController = navController, booksVM, loginVM)
+                NavigationComponent(navController = navController, loginVM = loginVM)
             }
         }
     }

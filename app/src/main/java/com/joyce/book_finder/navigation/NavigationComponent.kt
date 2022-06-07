@@ -19,7 +19,6 @@ sealed class Screen(val route: String){
 @Composable
 fun NavigationComponent(
     navController: NavHostController,
-    booksVM: BooksViewModel,
     loginVM: LoginViewModel
 ) {
     NavHost(
@@ -30,10 +29,10 @@ fun NavigationComponent(
             SplashScreen(navController = navController)
         }
         composable(Screen.Login.route){
-            LoginScreen(navController = navController, loginVM)
+            LoginScreen(loginVM)
         }
-        composable(Screen.Books.route) {
-            BooksScreen(booksVM)
-        }
+//        composable(Screen.Books.route) {
+//            BooksScreen(booksVM)
+//        }
     }
 }

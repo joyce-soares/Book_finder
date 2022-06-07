@@ -51,6 +51,7 @@ data class BookItem(
 	@SerializedName("faixa_etaria") val faixa_etaria: String? = null,
 	@SerializedName("ano_escolar") val ano_escolar: String? = null,
 	@SerializedName("grau_escolar") val grau_escolar: String? = null,
+	@SerializedName("materia_escolar") val materiaEscolar: String? = null,
 	@SerializedName("link") val link: String? = null,
 	@SerializedName("booktrailer") val booktrailer: String? = null,
 	@SerializedName("medidas") val medidas: Medidas? = null,
@@ -67,14 +68,13 @@ data class BookItem(
 	@SerializedName("preco") val preco: String? = null,
 	@SerializedName("registro_criado_em") val registroCriadoEm: String? = null,
 	@SerializedName("registro_atualizado_em") val registroAtualizadoEm: String? = null,
-	@SerializedName("imagens") val imagens: Imagens? = null,
+	@SerializedName("imagens") val imagens: Imagens,
 	@SerializedName("editora") val editora: Editora? = null,
-	@SerializedName("selo") val selo: Selo? = null,
-	@SerializedName("materia_escolar") val materiaEscolar: String? = null
+	@SerializedName("selo") val selo: Selo? = null
 ) : Parcelable
 
 @Parcelize
-data class ImagemPrimeiraCapa(
+data class imagem_primeira_capa(
 	@SerializedName("pequena") val pequena: String,
 	@SerializedName("media") val media: String,
 	@SerializedName("grande") val grande: String
@@ -116,7 +116,7 @@ data class ContribuicaoItem(
 
 @Parcelize
 data class Imagens(
-	@SerializedName("imagem_primeira_capa") val imagemPrimeiraCapa: ImagemPrimeiraCapa? = null
+	@SerializedName("imagem_primeira_capa") val imagem_primeira_capa: imagem_primeira_capa
 ) : Parcelable
 
 @Parcelize
