@@ -23,13 +23,15 @@ class BooksViewModel(
         get() = _state
 
     fun getAllBooks(texto: String) {
+        _loading.value = true
         viewModelScope.launch {
-            _state.value = BooksState.Loading
             RequestHandler.doRequest { service.getAllBooks(texto) }.then(
                 onSuccess = {
+                    _loading.value = false
                     _state.value = BooksState.Success(it)
                 },
                 onError = {
+                    _loading.value = false
                     _state.value = BooksState.Error(it)
                 })
         }
@@ -39,5 +41,4 @@ class BooksViewModel(
 sealed class BooksState {
     class Success(val books: ResponseGetBooks) : BooksState()
     class Error(val message: String) : BooksState()
-    object Loading : BooksState()
 }
