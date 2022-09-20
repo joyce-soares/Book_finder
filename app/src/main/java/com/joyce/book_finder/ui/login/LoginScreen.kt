@@ -1,5 +1,3 @@
-package com.joyce.book_finder.ui.login
-
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -25,13 +23,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.joyce.book_finder.R
 import com.joyce.book_finder.customViews.ButtonProgress
 import com.joyce.book_finder.customViews.TextFieldCustom
-import com.joyce.book_finder.navigation.Screen
 import com.joyce.book_finder.theme.PRIMARY
+import com.joyce.book_finder.ui.login.LoginState
+import com.joyce.book_finder.ui.login.LoginViewModel
 import com.joyce.book_finder.ui.search_book.BooksActivity
 import org.koin.androidx.compose.getViewModel
 
@@ -40,6 +38,7 @@ fun LoginScreen(loginVM: LoginViewModel) {
     val localFocusManager = LocalFocusManager.current
     var passwordVisible by remember { mutableStateOf(false) }
     val state by loginVM.state.collectAsState()
+    val isEnableButton = loginVM.isEnableButton
     val isLoading by loginVM.loading.collectAsState()
     when(state){
         is LoginState.Success -> { BooksActivity.start(LocalContext.current) }
@@ -100,6 +99,7 @@ fun LoginScreen(loginVM: LoginViewModel) {
         )
         Spacer(modifier = Modifier.height(26.dp))
         ButtonProgress(
+            isEnabled = isEnableButton,
             isLoading = isLoading,
             modifier = Modifier
                 .fillMaxWidth()
@@ -144,5 +144,5 @@ fun LoginScreen(loginVM: LoginViewModel) {
 @Preview
 @Composable
 fun LoginScreenPreview() {
-   // LoginScreen(rememberNavController(), loginVM)
+    LoginScreen(getViewModel())
 }

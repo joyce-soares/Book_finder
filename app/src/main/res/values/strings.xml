@@ -4,5 +4,5 @@
     <string name="title_activity_books">BooksActivity</string>
     <string name="autor"><b>Autor: </b>%1$s %2$s</string>
     <string name="titulo"><b>Titulo: </b>%1$s</string>
-    <string name="descricao"><b>Descricao: </b>%1$s</string>
+    <string name="descricao"><b>Descrição:</b> %1$s</string>
 </resources>

@@ -28,7 +28,7 @@ class LoginViewModel: ViewModel() {
     val loading: StateFlow<Boolean>
         get() = _loading
 
-    var isPasswordEnable by mutableStateOf(false)
+    private var isPasswordEnable by mutableStateOf(false)
 
     var isEnableButton by mutableStateOf(false)
 
@@ -81,16 +81,6 @@ class LoginViewModel: ViewModel() {
     fun login() = viewModelScope.launch{
         _loading.value = true
          val auth: FirebaseAuth = Firebase.auth
-//        auth.createUserWithEmailAndPassword(emailInput.value.trim(), passwordInput.value.trim())
-//            .addOnCompleteListener(this) { task ->
-//                if (task.isSuccessful) {
-//                    // Sign in success, update UI with the signed-in user's information
-//                    Log.d(TAG, "createUserWithEmail:success")
-//                    val user = auth.currentUser
-//                } else {
-//                    Log.d(TAG, "createUserWithEmail:failure", task.exception)
-//                }
-//            }
         auth.signInWithEmailAndPassword(emailInput.value.trim(), passwordInput.value.trim())
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

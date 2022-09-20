@@ -1,13 +1,11 @@
 package com.joyce.book_finder.navigation
 
+import LoginScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.joyce.book_finder.ui.login.LoginScreen
 import com.joyce.book_finder.ui.login.LoginViewModel
-import com.joyce.book_finder.ui.search_book.BooksScreen
-import com.joyce.book_finder.ui.search_book.BooksViewModel
 import com.joyce.book_finder.ui.splash.SplashScreen
 
 sealed class Screen(val route: String){

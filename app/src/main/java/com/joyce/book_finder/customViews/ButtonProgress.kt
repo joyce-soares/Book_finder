@@ -21,6 +21,7 @@ import com.joyce.book_finder.theme.Shapes
 
 @Composable
 fun ButtonProgress(
+    isEnabled: Boolean = true,
     modifier: Modifier = Modifier,
     text: String = "",
     loadingText: String = "",
@@ -33,12 +34,10 @@ fun ButtonProgress(
 ) {
 
     Surface(
-        modifier = modifier.clickable {
-            onClicked()
-        },
+        modifier = if (isEnabled) modifier.clickable { onClicked() } else modifier.clickable {  },
         shape = shape,
         border = BorderStroke(width = 1.dp, color = borderColor),
-        color = backgroundColor
+        color =  if (isEnabled) backgroundColor else Color.Gray
     ) {
         Row(
             modifier = Modifier

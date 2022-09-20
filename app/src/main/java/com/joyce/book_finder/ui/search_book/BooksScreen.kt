@@ -8,14 +8,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -97,98 +104,79 @@ fun RenderList(books: ResponseGetBooks) {
 @Composable
 private fun BookContent(book: BookItem?) {
 
-    ConstraintLayout(
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .background(Color.White)
     ) {
-        val (autor, titulo, desc, image, txtAu, txtTi, txtDesc) = createRefs()
-
+        val strings = BookDetailStrings(
+            autor =buildAnnotatedString {
+                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Autor: ") }
+                withStyle(SpanStyle(fontWeight = FontWeight.Light)) {
+                    if (book != null) {
+                        append(book.contribuicao?.get(0)?.nome ?: ("" + book.contribuicao?.get(0)?.sobrenome) ?: "")
+                    }
+                }
+            },
+            titulo = buildAnnotatedString {
+                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Título: ") }
+                withStyle(SpanStyle(fontWeight = FontWeight.Light)) {
+                    if (book != null) {
+                        append(book.titulo ?: "")
+                    }
+                }
+            },
+            desc = buildAnnotatedString {
+                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Descrição: ") }
+                withStyle(SpanStyle(fontWeight = FontWeight.Light)) {
+                    if (book != null) {
+                        append(book.sumario ?: "")
+                    }
+                }
+            })
 
         if (book != null) {
             val url = book.imagens.imagem_primeira_capa.pequena
             val painter = rememberImagePainter(data = url, builder = {})
+
             Image(
                 painter = painter, contentDescription = "",
                 modifier = Modifier
                     .width(90.dp)
                     .height(90.dp)
-                    .padding(top = 10.dp, start = 10.dp)
-                    .constrainAs(image) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                    },
-            )
-
-            val context = LocalContext.current
-            Text(
-                text = "Autor: ",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(top = 10.dp, start = 8.dp)
-                    .constrainAs(txtAu) {
-                        top.linkTo(parent.top)
-                        start.linkTo(image.end)
-                    },
-            )
-            Text(
-                text = "NULLO",
-                modifier = Modifier
-                    .padding(top = 10.dp)
-                    .constrainAs(autor) {
-                        top.linkTo(parent.top)
-                        start.linkTo(autor.end)
-                    },
-            )
-            Text(
-                text = "Título: ",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                modifier = Modifier
-                    .padding(top = 8.dp, start = 8.dp)
-                    .constrainAs(txtTi) {
-                        top.linkTo(autor.bottom)
-                        start.linkTo(image.end)
-                    },
-            )
-            Text(
-                text = book.titulo ?: "",
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .constrainAs(titulo) {
-                        top.linkTo(txtTi.top)
-                        start.linkTo(txtTi.end)
-                        bottom.linkTo(txtTi.bottom)
-                    },
-            )
-            if (!book.sumario.isNullOrEmpty()) {
+                    .padding(top = 10.dp, start = 10.dp))
+            
+            Column {
                 Text(
-                    text = "Descrição: ",
+                    text = strings.autor,
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                )
+
+                Text(
+                    text = strings.titulo,
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                )
+
+                if (!book.sumario.isNullOrEmpty()) {
+                Text(
+                    text = strings.desc,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
-                        .padding(top = 8.dp, start = 8.dp)
-                        .constrainAs(txtDesc) {
-                            top.linkTo(txtTi.bottom)
-                            start.linkTo(image.end)
-                        },
-                )
-                Text(
-                    textAlign = TextAlign.Left,
-                    maxLines = 3,
-                    text =  book.sumario,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp, end = 15.dp)
-                        .constrainAs(desc) {
-                            top.linkTo(txtDesc.top)
-                            start.linkTo(txtDesc.end)
-                        },
+                        .wrapContentWidth()
+                        .padding(top = 8.dp)
                 )
             }
+            }
         }
+        
     }
 }
 
