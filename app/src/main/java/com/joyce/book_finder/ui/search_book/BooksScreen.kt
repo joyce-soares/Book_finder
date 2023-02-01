@@ -6,29 +6,29 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import com.joyce.book_finder.R
 import com.joyce.book_finder.customViews.ButtonProgress
 import com.joyce.book_finder.models.*
 import com.joyce.book_finder.theme.PRIMARY
@@ -39,6 +39,7 @@ fun BooksScreen(booksVM: BooksViewModel) {
     BooksContent(booksVM = booksVM, state = state)
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BooksContent(booksVM: BooksViewModel, state: BooksState?) {
     val isLoading by booksVM.loading.collectAsState()
@@ -50,9 +51,7 @@ fun BooksContent(booksVM: BooksViewModel, state: BooksState?) {
         }
         TextField(
             value = fieldValue,
-            onValueChange = {
-                fieldValue = it
-            },
+            onValueChange = { fieldValue = it },
             modifier = Modifier
                 .padding(start = 20.dp, end = 20.dp, top = 20.dp)
                 .fillMaxWidth(),
@@ -63,9 +62,12 @@ fun BooksContent(booksVM: BooksViewModel, state: BooksState?) {
                 focusedIndicatorColor = PRIMARY,
                 unfocusedIndicatorColor = PRIMARY
             ),
-
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Search,
+                )
             )
         Spacer(modifier = Modifier.height(26.dp))
+        val keyboardController = LocalSoftwareKeyboardController.current
         ButtonProgress(
             isLoading = isLoading,
             modifier = Modifier
@@ -73,13 +75,20 @@ fun BooksContent(booksVM: BooksViewModel, state: BooksState?) {
                 .padding(start = 20.dp, end = 20.dp),
             text = "Procurar",
             loadingText = "Procurando...",
-            onClicked = { booksVM.getAllBooks(fieldValue.text.trim()) }
+            onClicked = {
+                booksVM.getAllBooks(fieldValue.text.trim())
+                keyboardController?.hide()
+            }
         )
         Spacer(modifier = Modifier.height(10.dp))
         when (state) {
             is BooksState.Success -> {
                 val books = remember { state.books }
-                RenderList(books = books)
+                if (state.books.status.success == true){
+                    RenderList(books = books)
+                } else{
+                    RenderEmptyBooks(books.status.message!!)
+                }
             }
             is BooksState.Error -> {
                 Toast.makeText(LocalContext.current, state.message, Toast.LENGTH_SHORT).show()
@@ -90,12 +99,23 @@ fun BooksContent(booksVM: BooksViewModel, state: BooksState?) {
 }
 
 @Composable
+fun RenderEmptyBooks(message: String) {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(10.dp)
+    ) {
+        Text(text = message,  textAlign = TextAlign.Center, modifier = Modifier.align(Alignment.CenterHorizontally))
+    }
+}
+
+@Composable
 fun RenderList(books: ResponseGetBooks) {
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ) {
-        items(books.books) { book ->
-            BookContent(book)
+        if (books.books != null) {
+            items(books.books) { book ->
+                BookContent(book)
+            }
         }
     }
 }
@@ -112,11 +132,13 @@ private fun BookContent(book: BookItem?) {
             .background(Color.White)
     ) {
         val strings = BookDetailStrings(
-            autor =buildAnnotatedString {
+            autor = buildAnnotatedString {
                 withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Autor: ") }
                 withStyle(SpanStyle(fontWeight = FontWeight.Light)) {
                     if (book != null) {
-                        append(book.contribuicao?.get(0)?.nome ?: ("" + book.contribuicao?.get(0)?.sobrenome) ?: "")
+                        var contribuicao = "Autor Desconhecido"
+                        if (!book.contribuicao.isNullOrEmpty())contribuicao = book.contribuicao[0]?.nome + " " + book.contribuicao[0]?.sobrenome
+                        append(contribuicao)
                     }
                 }
             },
@@ -132,7 +154,7 @@ private fun BookContent(book: BookItem?) {
                 withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Descrição: ") }
                 withStyle(SpanStyle(fontWeight = FontWeight.Light)) {
                     if (book != null) {
-                        append(book.sumario ?: "")
+                        append(book.sinopse ?: "")
                     }
                 }
             })
@@ -162,7 +184,7 @@ private fun BookContent(book: BookItem?) {
                         .padding(top = 8.dp)
                 )
 
-                if (!book.sumario.isNullOrEmpty()) {
+                if (!book.sinopse.isNullOrEmpty()) {
                 Text(
                     text = strings.desc,
                     maxLines = 2,
@@ -195,6 +217,12 @@ fun BooksScreenPreview() {
         imagens = imagens
     )
     BookContent(book)
+}
+
+@Preview
+@Composable
+fun RenderEmptyBooks() {
+    RenderEmptyBooks(message = "Nenhum registro foi encontrado")
 }
 
 

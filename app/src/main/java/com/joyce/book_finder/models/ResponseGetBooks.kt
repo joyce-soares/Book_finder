@@ -6,15 +6,16 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ResponseGetBooks(
-	@SerializedName("books") val books: List<BookItem>,
-	@SerializedName("navigation") val navigation: Navigation,
+	@SerializedName("books") val books: List<BookItem>?,
+	@SerializedName("navigation") val navigation: Navigation?,
 	@SerializedName("status") val status: Status,
 ) : Parcelable
 
 @Parcelize
 data class Status(
-	@SerializedName("success") val success: Boolean? = null,
-	@SerializedName("code") val code: Int? = null
+	@SerializedName("success") var success: Boolean? = null,
+	@SerializedName("code") val code: Int? = null,
+	@SerializedName("message") val message: String?
 ): Parcelable
 
 @Parcelize
@@ -54,7 +55,7 @@ data class BookItem(
 	@SerializedName("materia_escolar") val materiaEscolar: String? = null,
 	@SerializedName("link") val link: String? = null,
 	@SerializedName("booktrailer") val booktrailer: String? = null,
-	@SerializedName("medidas") val medidas: Medidas? = null,
+	//@SerializedName("medidas") val medidas: List<Medidas>? = null,
 	@SerializedName("dimensoes") val dimensoes: String? = null,
 	@SerializedName("moeda") val moeda: String? = null,
 	@SerializedName("ebook_drm") val ebookDrm: String? = null,

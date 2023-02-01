@@ -1,6 +1,10 @@
 package com.joyce.book_finder.ui.login
 
+import android.app.Activity
+import android.content.Context
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -61,6 +65,7 @@ class LoginViewModel: ViewModel() {
         if (value.length >= 6) {
             isPasswordEnable = true
             isEnableButton()
+
         }else{
             isPasswordEnable = false
         }
@@ -106,4 +111,13 @@ class LoginViewModel: ViewModel() {
 sealed class LoginState{
     object Success : LoginState()
     data class Error(val message: String) : LoginState()
+}
+
+fun hideKeyboard(activity: Activity) {
+    val imm: InputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    var view = activity.currentFocus
+    if (view == null) {
+        view = View(activity)
+    }
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
 }

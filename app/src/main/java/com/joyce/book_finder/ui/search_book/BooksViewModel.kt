@@ -39,6 +39,6 @@ class BooksViewModel(
 }
 
 sealed class BooksState {
-    class Success(val books: ResponseGetBooks) : BooksState()
+    class Success(var books: ResponseGetBooks) : BooksState()
     class Error(val message: String) : BooksState()
 }
